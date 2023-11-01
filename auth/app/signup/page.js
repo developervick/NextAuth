@@ -1,21 +1,55 @@
+"use client"
 import Link from "next/link";
+import { useRef, useState } from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
 function Signup(){
+
+    const email = useRef({})
+    const password = useRef({})
+    const confirm = useRef({})
+    const [msg , setMsg] = useState('')
+    const router = useRouter()
+
+    async function onSubmit(event){
+        event.preventDefault()
+
+        if (password.current.value != confirm.current.value){
+            console.log(password.current.value, confirm.current.value)
+            setMsg('Password and Confirm Password Does not matches')
+        }else{
+            const res = await axios.post('/api/signup', {
+            email: email.current.value,
+            password: password.current.value
+            })
+            console.log(res)
+            if(res.statusText = "OK"){
+                setMsg(res.data.msg)
+
+            }
+            setMsg(res.data.msg)
+        }
+    }
+
+
     return(
         <>
             <div className="flex justify-center items-center bg-gray-950 h-screen">
                 <div className="flex flex-col justify-center items-center bg-gray-800 w-[40%] h-[50%]">
                     <Link className='text-blue-500' href="/">Home </Link>
                     <Link className='text-blue-500' href="/login">Login </Link>
-                    <div className="flex flex-col w-[50%]  items-start">
+                    <form action={onSubmit} className="flex flex-col w-[50%]  items-start">
                         <label className="text-white font-semibold text-lg">Email</label>
-                        <input className="mb-3 p-1 rounded-sm" type="text" placeholder="Email" name="email"></input>
+                        <input ref={email} className="mb-3 p-1 rounded-sm" type="text" placeholder="Email" name="email"></input>
                         <label className="text-white font-semibold text-lg">Password</label>
-                        <input className="mb-3 p-1 rounded-sm" type="password" placeholder="Password" name="password"></input>
+                        <input ref={password} className="mb-3 p-1 rounded-sm" type="password" placeholder="Password" name="password"></input>
                         <label className="text-white font-semibold text-lg" >Confirm Password</label>
-                        <input className="mb-3 p-1 rounded-sm" type="password" placeholder="Confirm Password" name="confirm"></input>
-                        <button className="mb-3 bg-gray-500 p-2 raunded-sm text-white hover:bg-gray-600" type="submit">SignIn</button>
-                    </div>
+                        <input ref={confirm} className="mb-3 p-1 rounded-sm" type="password" placeholder="Confirm Password" name="confirm"></input>
+                        <button onClick={onSubmit} className="mb-3 bg-gray-500 p-2 raunded-sm text-white hover:bg-gray-600" type="submit">SignIn</button>
+                    </form>
+                    
+                        {msg? <div className="bg-red-200 p-2 font-bold text-red-700">{msg}</div> : null}
                 </div>
             </div>
             
