@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-//const CONN_URI = "mongodb+srv://developervick:Vicky$904@cluster0.xrmyary.mongodb.net/?retryWrites=true&w=majority"
+//const CONN_URI = "mongodb+srv://developervick:<password>@cluster0.xrmyary.mongodb.net/?retryWrites=true&w=majority"
 
 const connectDB = mongoose.connect(process.env.MONGODB_CONN_STRING, {
 }).then(()=>{
