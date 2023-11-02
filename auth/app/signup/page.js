@@ -17,7 +17,11 @@ function Signup(){
 
         if (password.current.value != confirm.current.value){
             setMsg('Password and Confirm Password does not matches')
-        }else{
+        }
+        else if(!email.current.value){
+            setMsg('Enter email')
+        }
+        else{
             try{
                 const res = await axios.post('/api/signup', {
                 email: email.current.value,
@@ -39,8 +43,7 @@ function Signup(){
         <>
             <div className="flex justify-center items-center bg-gray-950 h-screen">
                 <div className="flex flex-col justify-center items-center bg-gray-800 w-[40%] h-[50%]">
-                    <Link className='text-blue-500' href="/">Home </Link>
-                    <Link className='text-blue-500' href="/login">Login </Link>
+                    <div className='text-stone-200 px-10 text-xl font-bold' href="/login">SignUp</div>
                     <form action={onSubmit} className="flex flex-col w-[50%]  items-start">
                         <label className="text-white font-semibold text-lg">Email</label>
                         <input ref={email} className="mb-3 p-1 rounded-sm" type="text" placeholder="Email" name="email"></input>
@@ -48,7 +51,11 @@ function Signup(){
                         <input ref={password} className="mb-3 p-1 rounded-sm" type="password" placeholder="Password" name="password"></input>
                         <label className="text-white font-semibold text-lg" >Confirm Password</label>
                         <input ref={confirm} className="mb-3 p-1 rounded-sm" type="password" placeholder="Confirm Password" name="confirm"></input>
-                        <button onClick={onSubmit} className="mb-3 bg-gray-500 p-2 raunded-sm text-white hover:bg-gray-600" type="submit">SignIn</button>
+                        <div className="flex justify-between items-center w-full">
+                            <button onClick={onSubmit} className="mb-3 bg-green-500 p-2 raunded-sm text-white hover:bg-green-600" type="submit">SignIn</button>
+                            <Link className='text-green-500 text-xl font-bold' href="/login">Login </Link>
+                        </div>
+                        
                     </form>
                     
                         {msg? <div className="bg-red-200 p-2 font-bold text-red-700">{msg}</div> : null}
