@@ -2,29 +2,31 @@
 import Link from "next/link";
 import { useState } from "react";
 import axios from 'axios';
+import { useRouter } from "next/navigation";
 
 function Login(){
 
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [msg, setMsg] = useState()
+    const router = useRouter()
 
     async function onSubmit() {
-        const res = await axios.post('/api/login', {
-            email: email,
-            password: password
-        })
-        console.log(res)
-        console.log(res.status)
-        if(res.status == 200){
-            setMsg(res.data.msg)
-        }
-        else{
-            setMsg("some error occured")
-        }
-    }
 
-    console.log(email, password)
+        try{
+            const res = await axios.post('/api/login', {
+                email: email,
+                password: password
+            })
+
+            if(res.status == 200){
+                router.push("/")
+            }
+        }catch(e){
+            setMsg(`Please Retry  ${e.message}`)
+        }
+
+    }
 
    return(
         <>
@@ -39,7 +41,7 @@ function Login(){
                         <input onChange={(e=>setPassword(e.target.value))} className="mb-3 p-1 rounded-sm" type="password" placeholder="Password" name="password"></input>
                         <button onClick={onSubmit} className="mb-3 bg-gray-500 p-2 raunded-sm text-white hover:bg-gray-600" type="submit">Login</button>
                     </div>
-                    { msg ? <div className="p-2 text-red-600 bg-red-300">{msg}</div> : null}
+                    { msg ? <div className="p-2 text-red-600 font-bold bg-red-200">{msg}</div> : null}
                 </div>
             </div>
         </>

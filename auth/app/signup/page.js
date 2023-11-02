@@ -16,19 +16,21 @@ function Signup(){
         event.preventDefault()
 
         if (password.current.value != confirm.current.value){
-            console.log(password.current.value, confirm.current.value)
-            setMsg('Password and Confirm Password Does not matches')
+            setMsg('Password and Confirm Password does not matches')
         }else{
-            const res = await axios.post('/api/signup', {
-            email: email.current.value,
-            password: password.current.value
-            })
-            console.log(res)
-            if(res.statusText = "OK"){
-                setMsg(res.data.msg)
-
+            try{
+                const res = await axios.post('/api/signup', {
+                email: email.current.value,
+                password: password.current.value
+                })
+                console.log(res)
+                if(res.status == 201){
+                    router.push("/")
+                }
+            }catch(e){
+                console.log(e)
+                setMsg(e.response.data.error)
             }
-            setMsg(res.data.msg)
         }
     }
 
